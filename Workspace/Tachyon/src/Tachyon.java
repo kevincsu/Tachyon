@@ -22,9 +22,24 @@ public class Tachyon {
 	public Tachyon(String p) {
 		this.p = p;
 
+		String[] tempPieces = p.split("\\.\\*");
+		ArrayList<String> newPieces = new ArrayList<String>();
+		for (String tempPiece : tempPieces) {
+			if (!tempPiece.equals("")) {
+				newPieces.add(tempPiece);
+			}
+		}
+		pieces = new String[newPieces.size()];
+		for (int i = 0; i < newPieces.size(); i++) {
+			pieces[i] = newPieces.get(i);
+		}
+
+		startAnchored = true;
+		endAnchored = true;
+		
 		if (p.length() > 1) {
-			startAnchored = (p.charAt(0) == '.' && p.charAt(1) == '*');
-			endAnchored = (p.charAt(p.length() - 2) == '.' && p.charAt(p
+			startAnchored = !(p.charAt(0) == '.' && p.charAt(1) == '*');
+			endAnchored = !(p.charAt(p.length() - 2) == '.' && p.charAt(p
 					.length() - 1) == '*');
 		}
 	}
@@ -42,7 +57,6 @@ public class Tachyon {
 	 */
 	public int search(String t) {
 		this.t = t;
-		pieces = t.split(".*");
 
 		if (pieces.length < 1) {
 			return 0;
@@ -78,7 +92,7 @@ public class Tachyon {
 			}
 
 			// Try to match it from this index
-			int newStart = start + pieces[pieceNumber].length();
+			int newStart = possibleStart + pieces[pieceNumber].length();
 
 			if (recursiveSearch(newStart, pieceNumber + 1) != -1) {
 				return possibleStart;
@@ -97,7 +111,6 @@ public class Tachyon {
 	 */
 	public boolean match(String t) {
 		this.t = t;
-		pieces = t.split(".*");
 
 		if (pieces.length < 1) {
 			return true;
@@ -140,7 +153,7 @@ public class Tachyon {
 			}
 
 			// Try to match it from this index
-			int newStart = start + pieces[pieceNumber].length();
+			int newStart = possibleStart + pieces[pieceNumber].length();
 
 			if (endAnchored && pieceNumber == pieces.length - 1) {
 				if (newStart != t.length()) {
