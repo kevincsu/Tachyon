@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
  * 
  */
 public class Main {
-	public static final int NUM_TRIALS = 50;
+	public static final int NUM_TRIALS = 1;
 	public static ArrayList<String> input;
 
 	public static void main(String args[]) {
